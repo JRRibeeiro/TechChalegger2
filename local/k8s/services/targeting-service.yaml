@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: targeting-service
+  namespace: techchallenger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: targeting-service
+  template:
+    metadata:
+      labels:
+        app: targeting-service
+    spec:
+      containers:
+        - name: targeting-service
+          image: robertoribeiroo/targeting-service:latest
+          env:
+            - name: DATABASE_URL
+              value: postgres://targeting_user:targeting_pass@targeting-postgres:5432/targeting_db
+            - name: PORT
+              value: "8003"
+            - name: AUTH_SERVICE_URL
+              value: http://auth-service:8001
+          ports:
+            - containerPort: 8003
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: targeting-service
+  namespace: techchallenger
+spec:
+  selector:
+    app: targeting-service
+  ports:
+    - port: 8003

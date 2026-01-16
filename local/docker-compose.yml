@@ -1,0 +1,103 @@
+services:
+  # DATABASES
+  auth-postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: auth_user
+      POSTGRES_PASSWORD: auth_pass
+      POSTGRES_DB: auth_db
+    volumes:
+      - auth_pg:/var/lib/postgresql/data
+      - ./auth-service/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  flags-postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: flags_user
+      POSTGRES_PASSWORD: flags_pass
+      POSTGRES_DB: flags_db
+    volumes:
+      - flags_pg:/var/lib/postgresql/data
+      - ./flag-service/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  targeting-postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: targeting_user
+      POSTGRES_PASSWORD: targeting_pass
+      POSTGRES_DB: targeting_db
+    volumes:
+      - targeting_pg:/var/lib/postgresql/data
+      - ./targeting-service/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  redis:
+    image: redis:7
+
+  # SERVICES
+  auth-service:
+    build: ./auth-service
+    environment:
+      DATABASE_URL: postgres://auth_user:auth_pass@auth-postgres:5432/auth_db
+      PORT: 8001
+      MASTER_KEY: admin-secreto-123
+    ports:
+      - "8001:8001"
+    depends_on:
+    - auth-postgres
+
+  flag-service:
+    build: ./flag-service
+    environment:
+      DATABASE_URL: postgres://flags_user:flags_pass@flags-postgres:5432/flags_db
+      PORT: 8002
+      AUTH_SERVICE_URL: http://auth-service:8001
+    ports:
+      - "8002:8002"
+    depends_on:
+      - flags-postgres
+      - auth-service
+
+  targeting-service:
+    build: ./targeting-service
+    environment:
+      DATABASE_URL: postgres://targeting_user:targeting_pass@targeting-postgres:5432/targeting_db
+      PORT: 8003
+      AUTH_SERVICE_URL: http://auth-service:8001
+    ports:
+      - "8003:8003"
+    depends_on:
+      - targeting-postgres
+      - auth-service
+
+  evaluation-service:
+    build: ./evaluation-service
+    environment:
+      PORT: 8004
+      REDIS_URL: redis://redis:6379
+      FLAG_SERVICE_URL: http://flag-service:8002
+      TARGETING_SERVICE_URL: http://targeting-service:8003
+      AUTH_SERVICE_URL: http://auth-service:8001
+      SERVICE_API_KEY: master-key-9c1f2b7e4a6d8e3f5c0a1b2d4e6f8a9c
+      AWS_REGION: us-east-1
+      AWS_SQS_URL: URL_SQS
+    ports:
+      - "8004:8004"
+    depends_on:
+      - redis
+      - flag-service
+      - targeting-service
+
+# analytics-service:
+#  build: ./analytics-service
+#   environment:
+#     PORT: 8005
+#     AWS_REGION: us-east-1
+#     AWS_SQS_URL: SUA_URL_SQS
+#     AWS_DYNAMODB_TABLE: ToggleMasterAnalytics
+#   ports:
+#     - "8005:8005"
+
+volumes:
+  auth_pg:
+  flags_pg:
+  targeting_pg:

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: evaluation-service
+  namespace: techchallenger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: evaluation-service
+  template:
+    metadata:
+      labels:
+        app: evaluation-service
+    spec:
+      containers:
+        - name: evaluation-service
+          image: robertoribeiroo/evaluation-service:latest
+          ports:
+            - containerPort: 8004
+          env:
+            - name: PORT
+              value: "8004"
+            - name: REDIS_URL
+              value: redis://redis:6379
+            - name: FLAG_SERVICE_URL
+              value: http://flag-service:8002
+            - name: TARGETING_SERVICE_URL
+              value: http://targeting-service:8003
+            - name: AUTH_SERVICE_URL
+              value: http://auth-service:8001
+            - name: SERVICE_API_KEY
+              value: master-key-9c1f2b7e4a6d8e3f5c0a1b2d4e6f8a9c

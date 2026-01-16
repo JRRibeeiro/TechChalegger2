@@ -1,0 +1,18 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: techchallenger-cluster
+  region: us-east-1
+
+iam:
+  serviceRoleARN: arn:aws:iam::242686594219:role/LabRole
+
+nodeGroups:
+  - name: ng-default
+    instanceType: t3.medium
+    desiredCapacity: 2
+    minSize: 1
+    maxSize: 2
+    iam:
+      instanceRoleARN: arn:aws:iam::242686594219:role/LabRole

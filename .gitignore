@@ -1,0 +1,10 @@
+cat > .gitignore << 'EOF'
+.DS_Store
+Thumbs.db
+*:Zone.Identifier
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+EOF
