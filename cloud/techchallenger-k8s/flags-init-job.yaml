@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: flags-db-init
+  namespace: techchallenger
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: psql
+        image: postgres:15
+        env:
+        - name: PGPASSWORD
+          value: flags_pass
+        command:
+        - sh
+        - -c
+        - |
+          psql -h flags-postgres -U flags_user -d flags_db <<'EOF'
+          CREATE TABLE IF NOT EXISTS flags (
+            id SERIAL PRIMARY KEY,
+            name TEXT NOT NULL UNIQUE,
+            description TEXT,
+            is_enabled BOOLEAN NOT NULL DEFAULT true,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          );
+          EOF
+

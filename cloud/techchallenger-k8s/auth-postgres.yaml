@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-postgres
+  namespace: techchallenger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-postgres
+  template:
+    metadata:
+      labels:
+        app: auth-postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        env:
+        - name: POSTGRES_USER
+          value: auth_user
+        - name: POSTGRES_PASSWORD
+          value: auth_pass
+        - name: POSTGRES_DB
+          value: auth_db
+        ports:
+        - containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-postgres
+  namespace: techchallenger
+spec:
+  selector:
+    app: auth-postgres
+  ports:
+  - port: 5432
+
