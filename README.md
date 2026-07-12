@@ -99,7 +99,7 @@ kubectl rollout restart deployment/analytics-service deployment/evaluation-servi
 ```
 Log de confirmação no analytics: `Found credentials from IAM Role: LabRole`.
 
-> Se o node group escalar (HPA criando nós novos), os nós novos nascem com hop-limit=1 — rodar o loop acima de novo.
+Observacao: nos novos criados pelo autoscaling nascem com hop-limit=1; rodar o loop acima novamente quando o node group escalar.
 
 ### 1.8 analytics-service crashava no boot (`ModuleNotFoundError: boto3`)
 
@@ -107,13 +107,12 @@ Log de confirmação no analytics: `Found credentials from IAM Role: LabRole`.
 
 **Correção:** `boto3` e `python-dotenv` adicionados ao `requirements.txt` + rebuild/push da imagem.
 
-### 1.9 `handlers.go` do auth com texto fora de código
+### 1.9 `handlers.go` do auth com linha invalida
 
-**Sintoma:** build falhava com `expected 'package', found corrija`.
+**Sintoma:** build da imagem falhava em `go build` com `expected 'package'` na primeira linha do arquivo.
 
-**Causa raiz:** texto colado por engano antes do `package main`.
+**Correcao:** primeira linha restaurada para `package main`.
 
-**Correção:** primeira linha restaurada para `package main`.
 
 ### 1.10 Rota de criação de chave sem autenticação no auth-service
 
@@ -297,7 +296,7 @@ Na versão inicial as imagens estavam no Docker Hub (limitações de autenticaç
 
 ## 8. Roteiro do vídeo
 
-Roteiro completo, com tempos, comandos e falas: **`ROTEIRO-VIDEO.md`** na raiz do repo.
+Roteiro completo, com tempos, comandos e falas: **`docs/roteiro-video.md`**.
 
 ---
 
@@ -306,4 +305,4 @@ Roteiro completo, com tempos, comandos e falas: **`ROTEIRO-VIDEO.md`** na raiz d
 - Local: 9 containers validados, subida ordenada por healthcheck
 - Cloud: 5 microsserviços Running no EKS, Ingress com Load Balancer respondendo, HPA ativo lendo métricas
 - Fluxo ponta a ponta comprovado: LB → evaluation → auth/flag → Redis → SQS → analytics → DynamoDB
-- Pendências: nenhuma técnica; falta gravar o vídeo e preencher o relatório (`RELATORIO-ENTREGA.txt`)
+- Pendências: nenhuma técnica; falta gravar o vídeo e preencher o relatório (`docs/relatorio-entrega.txt`)
