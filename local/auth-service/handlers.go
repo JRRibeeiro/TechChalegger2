@@ -1,4 +1,4 @@
-corrija o arquivo e me repasse : package main
+package main
 import (
 "encoding/json"
 "log"
