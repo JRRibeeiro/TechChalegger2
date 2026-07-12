@@ -1,10 +1,40 @@
+# REVISADO — ver docs/00-DIAGNOSTICO.md item "evaluation-service"
+# Mudanças vs. original: ConfigMap+Secret separados (antes tudo em env: solto),
+# requests/limits, readiness/liveness probe, e removida a env DYNAMODB_TABLE
+# (estava sobrando aqui — quem usa DynamoDB é o analytics-service, não este).
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: evaluation-service-config
+  namespace: techchallenger
+data:
+  PORT: "8004"
+  FLAG_SERVICE_URL: "http://flag-service:8002"
+  TARGETING_SERVICE_URL: "http://targeting-service:8003"
+  AUTH_SERVICE_URL: "http://auth-service:8001"
+  AWS_REGION: "us-east-1"
+  AWS_SQS_URL: "https://sqs.us-east-1.amazonaws.com/242686594219/techchallenger-evaluation-events"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: evaluation-service-secret
+  namespace: techchallenger
+type: Opaque
+stringData:
+  REDIS_URL: "redis://clustercfg.techchallenger-redis.mvwnsq.use1.cache.amazonaws.com:6379"
+  # A chave antiga (tm_key_715e...) ficou exposta em texto puro num manifest
+  # de repo público. Gere uma NOVA em /admin/keys e cole aqui — ver
+  # docs/03-RUNBOOK-CREDENCIAIS-SQS.md, seção "Rotacionar SERVICE_API_KEY".
+  SERVICE_API_KEY: "SUBSTITUA_POR_CHAVE_NOVA_ROTACIONADA"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: evaluation-service
   namespace: techchallenger
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: evaluation-service
@@ -18,29 +48,30 @@ spec:
           image: docker.io/robertoribeiroo/evaluation-service:latest
           ports:
             - containerPort: 8004
-          env:
-            - name: PORT
-              value: "8004"
-            - name: REDIS_URL
-              value: redis://clustercfg.techchallenger-redis.mvwnsq.use1.cache.amazonaws.com:6379
-            - name: FLAG_SERVICE_URL
-              value: http://flag-service:8002
-            - name: TARGETING_SERVICE_URL
-              value: http://targeting-service:8003
-            - name: AUTH_SERVICE_URL
-              value: http://auth-service:8001
-            - name: SERVICE_API_KEY
-              value: tm_key_715e0de7954245cb6710f4a11b3e3751c24ee5a254c3e4878964ae7d34d74f34
-            - name: AWS_SQS_URL
-              value: https://sqs.us-east-1.amazonaws.com/242686594219/techchallenger-evaluation-events
-            - name: AWS_REGION
-              value: us-east-1
-            - name: DYNAMODB_TABLE
-              value: techchallenger-analytics
-
-
-
-
+          envFrom:
+            - configMapRef:
+                name: evaluation-service-config
+            - secretRef:
+                name: evaluation-service-secret
+          resources:
+            requests:
+              cpu: 150m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8004
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8004
+            initialDelaySeconds: 15
+            periodSeconds: 20
 ---
 apiVersion: v1
 kind: Service
@@ -53,4 +84,3 @@ spec:
   ports:
     - port: 8004
       targetPort: 8004
-

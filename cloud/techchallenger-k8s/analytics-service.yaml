@@ -1,0 +1,70 @@
+# NOVO — este manifesto não existia no repo. O código (local/analytics-service/app.py)
+# já está pronto e funciona local, mas nunca foi implantado no EKS.
+# Porta e nome de tabela confirmados no código real (não são chute):
+#   app.py -> PORT default 8005; exige AWS_REGION, AWS_SQS_URL, AWS_DYNAMODB_TABLE
+#   README raiz, seção 7 -> tabela "ToggleMasterAnalytics", PK "event_id"
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: analytics-service-config
+  namespace: techchallenger
+data:
+  PORT: "8005"
+  AWS_REGION: "us-east-1"
+  AWS_SQS_URL: "https://sqs.us-east-1.amazonaws.com/242686594219/techchallenger-evaluation-events"
+  AWS_DYNAMODB_TABLE: "ToggleMasterAnalytics"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analytics-service
+  namespace: techchallenger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: analytics-service
+  template:
+    metadata:
+      labels:
+        app: analytics-service
+    spec:
+      containers:
+        - name: analytics-service
+          image: docker.io/robertoribeiroo/analytics-service:latest
+          ports:
+            - containerPort: 8005
+          envFrom:
+            - configMapRef:
+                name: analytics-service-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 400m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8005
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8005
+            initialDelaySeconds: 15
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: analytics-service
+  namespace: techchallenger
+spec:
+  selector:
+    app: analytics-service
+  ports:
+    - port: 8005
+      targetPort: 8005

@@ -1,0 +1,9 @@
+# NOVO — o enunciado lista "Namespaces" como primeiro manifesto básico,
+# mas o repo não tinha o arquivo (o namespace foi criado direto no cluster,
+# provavelmente via kubectl create namespace). Ter o manifesto versionado
+# garante reprodutibilidade: qualquer um recria o ambiente só com apply.
+# O "00-" no nome garante que ele é aplicado primeiro num apply -f da pasta.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: techchallenger

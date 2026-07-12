@@ -1,3 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: targeting-service-config
+  namespace: techchallenger
+data:
+  PORT: "8003"
+  AUTH_SERVICE_URL: "http://auth-service:8001"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: targeting-service-secret
+  namespace: techchallenger
+type: Opaque
+stringData:
+  DATABASE_URL: "postgres://targeting_user:targeting_password12345@techchallenger-targeting-db.cngcg0y0s735.us-east-1.rds.amazonaws.com:5432/targeting_db"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -18,13 +36,30 @@ spec:
           image: docker.io/robertoribeiroo/targeting-service:latest
           ports:
             - containerPort: 8003
-          env:
-            - name: DATABASE_URL
-              value: postgres://targeting_user:targeting_password12345@techchallenger-targeting-db.cngcg0y0s735.us-east-1.rds.amazonaws.com:5432/targeting_db
-            - name: PORT
-              value: "8003"
-            - name: AUTH_SERVICE_URL
-              value: http://auth-service:8001
+          envFrom:
+            - configMapRef:
+                name: targeting-service-config
+            - secretRef:
+                name: targeting-service-secret
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8003
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8003
+            initialDelaySeconds: 15
+            periodSeconds: 20
 ---
 apiVersion: v1
 kind: Service
@@ -37,4 +72,3 @@ spec:
   ports:
     - port: 8003
       targetPort: 8003
-
