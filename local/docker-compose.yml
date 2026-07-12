@@ -1,5 +1,4 @@
 services:
-  # ---------- DATABASES ----------
   auth-postgres:
     image: postgres:15
     environment:
@@ -59,7 +58,6 @@ services:
     ports:
       - "8600:8000"
 
-  # ---------- SERVICES ----------
   auth-service:
     build: ./auth-service
     environment:

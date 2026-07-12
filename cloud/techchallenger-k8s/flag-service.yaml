@@ -14,7 +14,7 @@ metadata:
   namespace: techchallenger
 type: Opaque
 stringData:
-  DATABASE_URL: "postgres://flags_user:flags_pass_123@flags-db.cngcg0y0s735.us-east-1.rds.amazonaws.com:5432/flags_db"
+  DATABASE_URL: "postgres://flags_user:flags_pass_123@flags-db.cn4pfjmwjrfu.us-east-1.rds.amazonaws.com:5432/flags_db"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: flag-service
-          image: docker.io/robertoribeiroo/flag-service:latest
+          image: 007188159471.dkr.ecr.us-east-1.amazonaws.com/flag-service:latest
           ports:
             - containerPort: 8002
           envFrom:

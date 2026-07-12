@@ -1,16 +1,3 @@
-# NOVO — o repo só tinha evaluation-ingress.yaml (cobre "/" -> evaluation-service).
-# Este arquivo cobre os outros 3 serviços HTTP. Mantenha o evaluation-ingress.yaml
-# como está — ele já funciona e não precisa mudar.
-#
-# Nota sobre rotas reais (confirmado no código, não no enunciado):
-#   auth-service   -> rotas em /validate, /admin/keys, /health (na raiz)
-#                      por isso este Ingress reescreve /auth/x -> /x
-#   flag-service   -> rotas já em /flags, /flags/<nome>, /health
-#                      NÃO precisa de rewrite, path bate 1:1 com o código
-#   targeting-svc  -> rotas em /rules, /rules/<flag>, /health (NÃO em /targeting!)
-#                      por isso o path externo aqui é /rules, não /targeting —
-#                      evita reescrita e evita 404 por causa do enunciado usar
-#                      "/targeting" só como exemplo ilustrativo
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

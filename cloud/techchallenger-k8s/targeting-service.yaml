@@ -14,7 +14,7 @@ metadata:
   namespace: techchallenger
 type: Opaque
 stringData:
-  DATABASE_URL: "postgres://targeting_user:targeting_password12345@techchallenger-targeting-db.cngcg0y0s735.us-east-1.rds.amazonaws.com:5432/targeting_db"
+  DATABASE_URL: "postgres://targeting_user:targeting_password12345@targeting-db.cn4pfjmwjrfu.us-east-1.rds.amazonaws.com:5432/targeting_db"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: targeting-service
-          image: docker.io/robertoribeiroo/targeting-service:latest
+          image: 007188159471.dkr.ecr.us-east-1.amazonaws.com/targeting-service:latest
           ports:
             - containerPort: 8003
           envFrom:

@@ -1,0 +1,24 @@
+============================================================
+RELATÓRIO DE ENTREGA — TECH CHALLENGE FASE 2
+ToggleMaster — Microsserviços no Kubernetes (AWS EKS)
+============================================================
+
+PARTICIPANTES
+-------------
+Nome:    Jean Roberto Evaristo Ribeiro
+RM:      [PREENCHER RM]
+Discord: [PREENCHER USERNAME]
+
+(adicione os demais integrantes do grupo, se houver)
+
+REPOSITÓRIO
+-----------
+https://github.com/JRRibeeiro/TechChalegger2
+
+VÍDEO DE DEMONSTRAÇÃO
+---------------------
+[COLAR LINK DO YOUTUBE APÓS UPLOAD]
+
+PONTUAÇÃO EXTRA (opcional)
+--------------------------
+Badge Google Cloud Skills Boost: [colar link do perfil público, se concluído]

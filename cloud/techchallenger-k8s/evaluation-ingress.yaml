@@ -1,15 +1,3 @@
-# CORRIGIDO — o original tinha a annotation:
-#     nginx.ingress.kubernetes.io/rewrite-target: /
-# Sem grupo de captura, isso reescreve QUALQUER path pra "/" antes de
-# entregar ao serviço. Na prática: GET /evaluate chega no evaluation-service
-# como GET / -> 404 (o serviço só tem /evaluate e /health). Os testes que
-# funcionaram devem ter sido via port-forward, que não passa pelo Ingress.
-# Correção: REMOVER a annotation. Com path "/" Prefix e sem rewrite, o
-# path original é preservado e /evaluate chega como /evaluate.
-#
-# Convivência com o ingress-completo.yaml: nginx roteia pelo match mais
-# específico ("longest prefix wins"), então /flags, /rules e /auth ganham
-# deste "/" — este aqui vira o catch-all do evaluation-service.
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

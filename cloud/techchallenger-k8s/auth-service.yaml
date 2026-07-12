@@ -1,5 +1,3 @@
-# REVISADO — adiciona ConfigMap/Secret, requests/limits, probes.
-# DATABASE_URL/MASTER_KEY antes viviam soltos em texto puro no Deployment.
 apiVersion: v1
 kind: Secret
 metadata:
@@ -7,7 +5,7 @@ metadata:
   namespace: techchallenger
 type: Opaque
 stringData:
-  DATABASE_URL: "postgres://auth_user:auth_pass_123@auth-postgres.cngcg0y0s735.us-east-1.rds.amazonaws.com:5432/auth_db"
+  DATABASE_URL: "postgres://auth_user:auth_pass_123@auth-db.cn4pfjmwjrfu.us-east-1.rds.amazonaws.com:5432/auth_db"
   MASTER_KEY: "admin-secreto-123"   # troque por algo forte antes da gravação do vídeo
 ---
 apiVersion: apps/v1
@@ -27,7 +25,7 @@ spec:
     spec:
       containers:
         - name: auth-service
-          image: docker.io/robertoribeiroo/auth-service:latest
+          image: 007188159471.dkr.ecr.us-east-1.amazonaws.com/auth-service:latest
           ports:
             - containerPort: 8001
           env:

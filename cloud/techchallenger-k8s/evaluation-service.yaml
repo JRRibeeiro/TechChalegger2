@@ -1,7 +1,3 @@
-# REVISADO — ver docs/00-DIAGNOSTICO.md item "evaluation-service"
-# Mudanças vs. original: ConfigMap+Secret separados (antes tudo em env: solto),
-# requests/limits, readiness/liveness probe, e removida a env DYNAMODB_TABLE
-# (estava sobrando aqui — quem usa DynamoDB é o analytics-service, não este).
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -13,7 +9,7 @@ data:
   TARGETING_SERVICE_URL: "http://targeting-service:8003"
   AUTH_SERVICE_URL: "http://auth-service:8001"
   AWS_REGION: "us-east-1"
-  AWS_SQS_URL: "https://sqs.us-east-1.amazonaws.com/242686594219/techchallenger-evaluation-events"
+  AWS_SQS_URL: "https://sqs.us-east-1.amazonaws.com/007188159471/techchallenger-evaluation-events"
 ---
 apiVersion: v1
 kind: Secret
@@ -22,10 +18,7 @@ metadata:
   namespace: techchallenger
 type: Opaque
 stringData:
-  REDIS_URL: "redis://clustercfg.techchallenger-redis.mvwnsq.use1.cache.amazonaws.com:6379"
-  # A chave antiga (tm_key_715e...) ficou exposta em texto puro num manifest
-  # de repo público. Gere uma NOVA em /admin/keys e cole aqui — ver
-  # docs/03-RUNBOOK-CREDENCIAIS-SQS.md, seção "Rotacionar SERVICE_API_KEY".
+  REDIS_URL: "redis://techchallenger-redis.pctckz.0001.use1.cache.amazonaws.com:6379"
   SERVICE_API_KEY: "SUBSTITUA_POR_CHAVE_NOVA_ROTACIONADA"
 ---
 apiVersion: apps/v1
@@ -45,7 +38,7 @@ spec:
     spec:
       containers:
         - name: evaluation-service
-          image: docker.io/robertoribeiroo/evaluation-service:latest
+          image: 007188159471.dkr.ecr.us-east-1.amazonaws.com/evaluation-service:latest
           ports:
             - containerPort: 8004
           envFrom:
