@@ -4,7 +4,7 @@
 > - **Execução local** (Docker Compose)
 > - **Execução em nuvem (AWS Academy / EKS)** com serviços gerenciados (RDS, ElastiCache, SQS e DynamoDB)
 > - **Principais problemas reais encontrados** (código, contrato e infraestrutura) e como foram resolvidos
-> - **Passo a passo de validação**, retomada do lab e roteiro para o vídeo de entrega
+> - **Passo a passo de validação** e retomada do lab
 
 ---
 
@@ -170,7 +170,7 @@ Observação: o path externo do targeting é `/rules` porque é a rota real do c
 
 ### 2.2 Local (Docker Compose)
 
-- 9 containers: 5 apps + 3 Postgres + Redis + DynamoDB Local
+- 10 containers: 5 apps + 3 Postgres + Redis + DynamoDB Local (o enunciado cita 2 Postgres; aqui são 3 para espelhar os 3 RDS da nuvem, um banco por serviço)
 - Healthchecks controlam a ordem de subida
 - SQS não tem emulador local exigido — evaluation/analytics recebem credenciais AWS por variável de ambiente (defaults inofensivos se não exportadas)
 
@@ -294,15 +294,8 @@ Na versão inicial as imagens estavam no Docker Hub (limitações de autenticaç
 
 ---
 
-## 8. Roteiro do vídeo
+## 8. Estado final
 
-Roteiro completo, com tempos, comandos e falas: **`docs/roteiro-video.md`**.
-
----
-
-## 9. Estado final
-
-- Local: 9 containers validados, subida ordenada por healthcheck
+- Local: 10 containers validados, subida ordenada por healthcheck
 - Cloud: 5 microsserviços Running no EKS, Ingress com Load Balancer respondendo, HPA ativo lendo métricas
 - Fluxo ponta a ponta comprovado: LB → evaluation → auth/flag → Redis → SQS → analytics → DynamoDB
-- Pendências: nenhuma técnica; falta gravar o vídeo e preencher o relatório (`docs/relatorio-entrega.txt`)

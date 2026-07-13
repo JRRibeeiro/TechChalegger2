@@ -19,7 +19,7 @@ metadata:
 type: Opaque
 stringData:
   REDIS_URL: "redis://techchallenger-redis.pctckz.0001.use1.cache.amazonaws.com:6379"
-  SERVICE_API_KEY: "SUBSTITUA_POR_CHAVE_NOVA_ROTACIONADA"
+  SERVICE_API_KEY: "tm_key_8582ecdb17fe2ede8097c697436117791342e7abafe76c78dab73c2fb98afe32"
 ---
 apiVersion: apps/v1
 kind: Deployment

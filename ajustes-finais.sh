@@ -1,3 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[ -d .git ] || { echo "rode da raiz do repositorio"; exit 1; }
+
+printf '.DS_Store\nThumbs.db\n*:Zone.Identifier\n.env\n__pycache__/\n*.pyc\n.venv/\nvenv/\n' > .gitignore
+
+sed -i 's#SERVICE_API_KEY: "SUBSTITUA_POR_CHAVE_NOVA_ROTACIONADA"#SERVICE_API_KEY: "tm_key_8582ecdb17fe2ede8097c697436117791342e7abafe76c78dab73c2fb98afe32"#' cloud/techchallenger-k8s/evaluation-service.yaml
+
+python3 << 'PY'
+r = open('README.md', encoding='utf-8').read()
+r = r.replace("> - **Passo a passo de validação**, retomada do lab e roteiro para o vídeo de entrega",
+              "> - **Passo a passo de validação** e retomada do lab")
+r = r.replace("""## 8. Roteiro do vídeo
+
+Roteiro completo, com tempos, comandos e falas: **`docs/roteiro-video.md`**.
+
+---
+
+## 9. Estado final""", "## 8. Estado final")
+r = r.replace("- Pendências: nenhuma técnica; falta gravar o vídeo e preencher o relatório (`docs/relatorio-entrega.txt`)\n", "")
+r = r.replace("- 9 containers: 5 apps + 3 Postgres + Redis + DynamoDB Local",
+              "- 10 containers: 5 apps + 3 Postgres + Redis + DynamoDB Local (o enunciado cita 2 Postgres; aqui são 3 para espelhar os 3 RDS da nuvem, um banco por serviço)")
+r = r.replace("- Local: 9 containers validados, subida ordenada por healthcheck",
+              "- Local: 10 containers validados, subida ordenada por healthcheck")
+open('README.md','w',encoding='utf-8').write(r)
+print("README ok")
+PY
+
+cat > docs/roteiro-video.md << 'ROTEIRO_EOF'
 # Roteiro de gravação — Fase 2 (15 a 18 min)
 
 Formato: cada cena tem **Executar** (comandos na ordem), **Falar** (fala natural, adapta com suas palavras) e **Por quê** (o que essa cena prova pro avaliador). Os itens do enunciado estão marcados com [E].
@@ -179,3 +208,8 @@ Encerrar: "Código, manifests e scripts de provisionamento estão no repositóri
 - [ ] arquitetura e desafios/LabRole explicados (cenas 1 e 8)
 - [ ] justificativa HPA por CPU vs KEDA (cena 8)
 - [ ] RDS vs ElastiCache vs DynamoDB (cena 8)
+ROTEIRO_EOF
+
+git add -A
+git commit -m "Ajustes finais: gitignore, chave do evaluation fixada, contagem de containers e roteiro de gravacao"
+git push
