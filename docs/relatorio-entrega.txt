@@ -6,8 +6,8 @@ ToggleMaster — Microsserviços no Kubernetes (AWS EKS)
 PARTICIPANTES
 -------------
 Nome:    Jean Roberto Evaristo Ribeiro
-RM:      [PREENCHER RM]
-Discord: [PREENCHER USERNAME]
+RM:      368425
+Discord: robertoribeiroo
 
 (adicione os demais integrantes do grupo, se houver)
 
