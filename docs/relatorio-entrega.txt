@@ -9,16 +9,15 @@ Nome:    Jean Roberto Evaristo Ribeiro
 RM:      368425
 Discord: robertoribeiroo
 
-(adicione os demais integrantes do grupo, se houver)
-
 REPOSITÓRIO
 -----------
 https://github.com/JRRibeeiro/TechChalegger2
 
 VÍDEO DE DEMONSTRAÇÃO
 ---------------------
-[COLAR LINK DO YOUTUBE APÓS UPLOAD]
+https://youtu.be/_Bb-yCvCJhs
 
-PONTUAÇÃO EXTRA (opcional)
---------------------------
-Badge Google Cloud Skills Boost: [colar link do perfil público, se concluído]
+PONTUAÇÃO EXTRA
+---------------
+Perfil Google Skills (badge Cloud Computing Fundamentals):
+https://www.skills.google/public_profiles/aa3d5c37-426c-4773-abe8-b887522e918f

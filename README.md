@@ -147,6 +147,8 @@ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/down
 
 ## 2. Arquitetura (local vs cloud)
 
+![Arquiteturas de Implantacao](docs/arquitetura.png)
+
 ### 2.1 Visão lógica
 
 ```

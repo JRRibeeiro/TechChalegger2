@@ -1,0 +1,199 @@
+<mxfile host="Electron">
+  <diagram name="Arquiteturas de Implantação" id="unified">
+    <mxGraphModel dx="1224" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1280" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="tt" parent="1" style="text;html=1;fontSize=17;fontStyle=1;fontColor=#1A4D7C;align=center;" value="ToggleMaster — Arquiteturas de Implantação - Fase 2&amp;nbsp;" vertex="1">
+          <mxGeometry height="30" width="700" x="300" as="geometry" />
+        </mxCell>
+        <mxCell id="P1" parent="1" style="rounded=1;fillColor=none;strokeColor=#B0B0B0;strokeWidth=2;verticalAlign=top;align=left;fontStyle=1;fontSize=13;fontColor=#1A4D7C;spacingLeft=10;spacingTop=4;" value="                Ambiente Nuvem  (AWS EKS · Academy/LabRole)" vertex="1">
+          <mxGeometry height="645" width="570" x="10" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="P2" parent="1" style="rounded=1;fillColor=none;strokeColor=#B0B0B0;strokeWidth=2;verticalAlign=top;align=left;fontStyle=1;fontSize=13;fontColor=#1A4D7C;spacingLeft=10;spacingTop=4;" value="                        Ambiente Local  (Docker Compose · 10 containers)" vertex="1">
+          <mxGeometry height="640" width="560" x="700" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="F1" parent="1" style="rounded=1;fillColor=none;strokeColor=#E3E3E3;verticalAlign=top;align=left;fontColor=#8a8a8a;fontStyle=1;fontSize=9;spacingLeft=8;" value="ACESSO" vertex="1">
+          <mxGeometry height="110" width="520" x="40" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="cli" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=10;" value="Cliente (curl / Postman)" vertex="1">
+          <mxGeometry height="40" width="140" x="60" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="ing" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=10;" value="Nginx Ingress Controller&#xa;Load Balancer AWS" vertex="1">
+          <mxGeometry height="52" width="270" x="260" y="122" as="geometry" />
+        </mxCell>
+        <mxCell id="ec" edge="1" parent="1" source="cli" style="endArrow=classic;html=1;strokeColor=#666666;" target="ing" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F2" parent="1" style="rounded=1;fillColor=none;strokeColor=#E3E3E3;verticalAlign=top;align=left;fontColor=#8a8a8a;fontStyle=1;fontSize=9;spacingLeft=8;" value="MICROSSERVIÇOS · namespace techchallenger" vertex="1">
+          <mxGeometry height="190" width="520" x="40" y="215" as="geometry" />
+        </mxCell>
+        <mxCell id="s1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=10;" value="auth-service&#xa;Go · :8001" vertex="1">
+          <mxGeometry height="50" width="110" x="55" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="s2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=10;" value="flag-service&#xa;Py · :8002" vertex="1">
+          <mxGeometry height="50" width="110" x="180" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=10;" value="targeting-svc&#xa;Py · :8003" vertex="1">
+          <mxGeometry height="50" width="110" x="305" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="s4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=10;" value="evaluation-svc&#xa;Go · :8004 · HPA 2–6" vertex="1">
+          <mxGeometry height="50" width="115" x="430" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="s5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=10;" value="analytics-service&#xa;Py · :8005 · HPA 1–4" vertex="1">
+          <mxGeometry height="44" width="150" x="395" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="p1" edge="1" parent="1" source="ing" style="endArrow=classic;html=1;strokeColor=#82B366;fontSize=9;" target="s1" value="/auth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2" edge="1" parent="1" source="ing" style="endArrow=classic;html=1;strokeColor=#82B366;fontSize=9;" target="s2" value="/flags">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p3" edge="1" parent="1" source="ing" style="endArrow=classic;html=1;strokeColor=#82B366;fontSize=9;" target="s3" value="/rules">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p4" edge="1" parent="1" source="ing" style="endArrow=classic;html=1;strokeColor=#82B366;fontSize=9;" target="s4" value="/evaluate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="i1" edge="1" parent="1" source="s4" style="endArrow=classic;html=1;dashed=1;strokeColor=#9673A6;fontSize=9;" target="s1" value="valida API key">
+          <mxGeometry relative="1" x="-0.0184" y="15" as="geometry">
+            <mxPoint x="4" as="offset" />
+            <Array as="points">
+              <mxPoint x="300" y="325" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i2" edge="1" parent="1" source="s4" style="endArrow=classic;html=1;dashed=1;strokeColor=#9673A6;fontSize=9;" target="s2" value="busca flag / regra">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="360" y="312" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="F3" parent="1" style="rounded=1;fillColor=none;strokeColor=#E3E3E3;verticalAlign=top;align=left;fontColor=#8a8a8a;fontStyle=1;fontSize=9;spacingLeft=8;" value="DADOS GERENCIADOS" vertex="1">
+          <mxGeometry height="150" width="520" x="40" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="d1" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;size=10;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=9;" value="RDS&#xa;auth_db" vertex="1">
+          <mxGeometry height="80" width="90" x="55" y="455" as="geometry" />
+        </mxCell>
+        <mxCell id="d2" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;size=10;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=9;" value="RDS&#xa;flags_db" vertex="1">
+          <mxGeometry height="80" width="90" x="160" y="455" as="geometry" />
+        </mxCell>
+        <mxCell id="d3" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;size=10;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=9;" value="RDS&#xa;targeting_db" vertex="1">
+          <mxGeometry height="80" width="90" x="265" y="455" as="geometry" />
+        </mxCell>
+        <mxCell id="d4" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;size=10;fillColor=#F8CECC;strokeColor=#B85450;fontSize=9;" value="Redis&#xa;ElastiCache" vertex="1">
+          <mxGeometry height="80" width="80" x="370" y="455" as="geometry" />
+        </mxCell>
+        <mxCell id="d5" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;size=10;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=9;" value="DynamoDB&#xa;Analytics" vertex="1">
+          <mxGeometry height="80" width="80" x="465" y="455" as="geometry" />
+        </mxCell>
+        <mxCell id="l1" edge="1" parent="1" source="s1" style="endArrow=classic;html=1;strokeColor=#6C8EBF;fontSize=9;" target="d1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l2" edge="1" parent="1" source="s2" style="endArrow=classic;html=1;strokeColor=#6C8EBF;fontSize=9;" target="d2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l3" edge="1" parent="1" source="s3" style="endArrow=classic;html=1;strokeColor=#6C8EBF;fontSize=9;" target="d3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l4" edge="1" parent="1" source="s4" style="endArrow=classic;html=1;strokeColor=#6C8EBF;fontSize=9;" target="d4" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="360" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l5" edge="1" parent="1" source="s5" style="endArrow=classic;html=1;strokeColor=#D79B00;fontSize=9;" target="d5" value="grava">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nn1" parent="1" style="text;html=1;fontStyle=2;fontSize=9;fontColor=#555555;" value="5 imagens no Amazon ECR · Secrets/ConfigMaps · probes · requests/limits · Metrics Server alimenta os HPA" vertex="1">
+          <mxGeometry height="18" width="500" x="50" y="585" as="geometry" />
+        </mxCell>
+        <mxCell id="nn2" parent="1" style="text;html=1;fontStyle=2;fontSize=9;fontColor=#8A4B08;" value="Pods herdam a LabRole via metadata da instância (hop-limit ajustado — sem IRSA)" vertex="1">
+          <mxGeometry height="18" width="500" x="50" y="608" as="geometry" />
+        </mxCell>
+        <mxCell id="q" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=2;fontSize=10;fontStyle=1;" value="Amazon&#xa;SQS&#xa;&#xa;fila única real&#xa;evaluation-events" vertex="1">
+          <mxGeometry height="150" width="80" x="600" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="q1" edge="1" parent="1" source="s4" style="endArrow=classic;html=1;strokeColor=#D6B656;fontSize=9;" target="q" value="publica">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="q2" edge="1" parent="1" source="q" style="endArrow=classic;html=1;strokeColor=#D6B656;fontSize=9;" target="s5" value="consome">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="G1" parent="1" style="rounded=1;fillColor=none;strokeColor=#E3E3E3;verticalAlign=top;align=left;fontColor=#8a8a8a;fontStyle=1;fontSize=9;spacingLeft=8;" value="SERVIÇOS" vertex="1">
+          <mxGeometry height="240" width="520" x="720" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="a1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=10;" value="auth-service :8001" vertex="1">
+          <mxGeometry height="46" width="140" x="740" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=10;" value="flag-service :8002" vertex="1">
+          <mxGeometry height="46" width="140" x="905" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=10;" value="targeting-service :8003" vertex="1">
+          <mxGeometry height="46" width="150" x="1070" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="a4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=10;" value="evaluation-service :8004" vertex="1">
+          <mxGeometry height="46" width="150" x="820" y="215" as="geometry" />
+        </mxCell>
+        <mxCell id="a5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=10;" value="analytics-service :8005" vertex="1">
+          <mxGeometry height="46" width="150" x="1000" y="215" as="geometry" />
+        </mxCell>
+        <mxCell id="nl0" parent="1" style="text;html=1;fontStyle=2;fontSize=9;fontColor=#666666;" value="mesmas imagens e variáveis do cluster — paridade local × nuvem" vertex="1">
+          <mxGeometry height="16" width="440" x="810" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="G2" parent="1" style="rounded=1;fillColor=none;strokeColor=#E3E3E3;verticalAlign=top;align=left;fontColor=#8a8a8a;fontStyle=1;fontSize=9;spacingLeft=8;" value="BANCOS E CACHE (containers)" vertex="1">
+          <mxGeometry height="170" width="520" x="720" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="b1" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;size=10;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=9;" value="postgres:15&#xa;auth" vertex="1">
+          <mxGeometry height="86" width="86" x="735" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="b2" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;size=10;fillColor=#F8CECC;strokeColor=#B85450;fontSize=9;" value="redis:7&#xa;cache" vertex="1">
+          <mxGeometry height="86" width="86" x="832" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="b3" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;size=10;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=9;" value="postgres:15&#xa;flags" vertex="1">
+          <mxGeometry height="86" width="86" x="929" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="b4" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;size=10;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=9;" value="dynamodb-local&#xa;:8600" vertex="1">
+          <mxGeometry height="86" width="90" x="1026" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="b5" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;size=10;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=9;" value="postgres:15&#xa;targeting" vertex="1">
+          <mxGeometry height="86" width="92" x="1128" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="m1" edge="1" parent="1" source="a1" style="endArrow=classic;html=1;strokeColor=#6C8EBF;fontSize=9;" target="b1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="m2" edge="1" parent="1" source="a4" style="endArrow=classic;html=1;strokeColor=#6C8EBF;fontSize=9;" target="b2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="m3" edge="1" parent="1" source="a2" style="endArrow=classic;html=1;strokeColor=#6C8EBF;fontSize=9;" target="b3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="m4" edge="1" parent="1" source="a5" style="endArrow=classic;html=1;strokeColor=#D79B00;fontSize=9;" target="b4" value="grava">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="m5" edge="1" parent="1" source="a3" style="endArrow=classic;html=1;strokeColor=#6C8EBF;fontSize=9;" target="b5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y1" edge="1" parent="1" source="a4" style="endArrow=classic;html=1;dashed=1;strokeColor=#D6B656;fontSize=9;" target="q" value="evento*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y2" edge="1" parent="1" source="q" style="endArrow=classic;html=1;dashed=1;strokeColor=#D6B656;fontSize=9;" target="a5" value="consome*">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="560" />
+              <mxPoint x="1075" y="560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nl1" parent="1" style="text;html=1;fontStyle=2;fontSize=9;fontColor=#1E6E42;" value="healthcheck (pg_isready / redis-cli ping): serviço só sobe com o banco saudável" vertex="1">
+          <mxGeometry height="16" width="480" x="740" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="nl2" parent="1" style="text;html=1;fontStyle=2;fontSize=9;fontColor=#7a5c00;" value="* fila real da AWS — usada quando as credenciais do lab são exportadas antes do compose up" vertex="1">
+          <mxGeometry height="16" width="480" x="735" y="610" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
